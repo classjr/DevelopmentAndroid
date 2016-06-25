@@ -40,7 +40,7 @@ public class Provider extends AppCompatActivity {
             id[i]     = cursor.getLong(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID));
             cursor.moveToNext();
         }
-
+         cursor.close();//close the cursor
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,number);
         this.listView.setAdapter(adapter);
     }
@@ -49,6 +49,7 @@ public class Provider extends AppCompatActivity {
      */
     public Boolean changePhoneNumber(Long id,String numberNew) throws Exception{
         //References: http://stackoverflow.com/questions/9907751/android-update-a-contact
+        //References: http://stackoverflow.com/questions/3351545/how-to-update-contact-number-using-android
          Builder builder = ContentProviderOperation.newUpdate(ContactsContract.CommonDataKinds.Phone._ID);// For update this number
          ArrayList<ContentProviderOperation> listOperations = new ArrayList<ContentProviderOperation>();
 
