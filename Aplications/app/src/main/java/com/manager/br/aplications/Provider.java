@@ -25,7 +25,7 @@ public class Provider extends AppCompatActivity {
         // Recuperar a lista de numeros de telefone
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
 
-        String[] projecao = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER,ContactsContract.CommonDataKinds.Phone.TYPE};
+        String[] projecao = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER,ContactsContract.CommonDataKinds.Phone.TYPE,ContactsContract.CommonDataKinds.Phone._ID};
         String selection = null;
         String[] selectionArgs = null;
         String sortOrder = null;
@@ -33,13 +33,34 @@ public class Provider extends AppCompatActivity {
         //Create a cursor
         Cursor cursor = contentResolver.query(uri,projecao, selection, selectionArgs, sortOrder);
         cursor.moveToFirst(); //Mover para a primeira linha
-        String[] number = new String[cursor.getCount()];
+        String[] number = new String[cursor.getCount()];  //Capture the number
+        Long[]   id     = new Long[cursor.getCount()];    ///Cpature the id of this phone
         for (int i = 0; i < cursor.getCount(); i++){
             number[i] = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            id[i]     = cursor.getLong(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID));
             cursor.moveToNext();
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,number);
         this.listView.setAdapter(adapter);
+    }
+    /**
+     * This method is responsable for change the value of Phone number
+     */
+    public Boolean changePhoneNumber(Long id,String numberNew) throws Exception{
+        //References: http://stackoverflow.com/questions/9907751/android-update-a-contact
+         Builder builder = ContentProviderOperation.newUpdate(ContactsContract.CommonDataKinds.Phone._ID);// For update this number
+         ArrayList<ContentProviderOperation> listOperations = new ArrayList<ContentProviderOperation>();
+
+         builder.withSelection(ContactsContract.CommonDataKinds.Phone._ID + "=?" , new String[]{String.valueOf(id)});
+         builder.withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, numberNew);
+         listOperations.add(builder.build());
+         
+         try{
+             getContentResolver().applyBatch(ContactsContract.CommonDataKinds.Phone.AUTHORITY, listOperations);
+         }catch(Exception ex){
+             new throw Exception("Error: "+ex.getMessage());
+         }
+        return true;
     }
 }
