@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.manager.br.aplications.email.SendEmail;
+
 import java.util.ArrayList;
 
 public class Provider extends AppCompatActivity {
@@ -23,6 +25,8 @@ public class Provider extends AppCompatActivity {
 
         //Recuperar objeto  da lista
         this.listView = (ListView)findViewById(R.id.listView);
+
+        SendEmail send = new SendEmail(this);
 
         //Recuperar um content provider
         ContentResolver contentResolver = getContentResolver();

@@ -1,5 +1,6 @@
 package com.manager.br.aplications.email;
 
+import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -15,14 +16,22 @@ public class Email {
      * This constructor is responsable for starting the prcessing for open email
      */
     public Email(){
-        this.emailIntent = new Intent(Intent.ACTION_SEND);//This line open new Intent for
+        this.emailIntent = new Intent(Intent.ACTION_SEND);//This line open new Intent
     }
 
     /**
      * This method is responsable fr send a email
+     * @param Message msg is message for send
+     * @param context is this context
      * @throws Exception
      */
-    public void send() throws Exception{
+    public void send(Message msg,Context context) throws Exception{
+        try{
+            this.emailIntent = msg.configureExtras(this.emailIntent);//Configure
+            context.startActivity(Intent.createChooser(this.emailIntent, "Send mail..."));
+        }catch(Exception ex){
+            throw new Exception(ex.getMessage());
+        }
 
     }
 }
