@@ -2,18 +2,27 @@ package com.manager.br.aplications.camera;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Paint;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.manager.br.aplications.R;
+
+import org.bytedeco.javacpp.*;
+import org.bytedeco.javacv.*;
+
+import java.io.ByteArrayOutputStream;
+
+import static org.bytedeco.javacpp.opencv_core.cvSize;
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
+import static org.bytedeco.javacpp.opencv_imgproc.*;
+
 
 public class ImageCapture extends AppCompatActivity {
 
@@ -33,37 +42,47 @@ public class ImageCapture extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intentCam = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                startActivityForResult(intentCam, 0);
+                startActivityForResult(intentCam, 1);
             }
         });
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bp = (Bitmap) data.getExtras().get("data");
-        bp = toGrayscale(bp);
-        imageView.setImageBitmap(bp);
+
+        IplImage img = bitMapToIplImage(bp);
+        IplImage grayS = opencv_core.IplImage.create(cvSize(bp.getWidth(), bp.getHeight()), IPL_DEPTH_8U, 1);
+        cvCvtColor(img , grayS , CV_RGB2GRAY);
+        Bitmap gray = iplImageToBitmap(grayS);
+
+        imageView.setImageBitmap(gray);
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
-    public Bitmap toGrayscale(Bitmap bmpOriginal)
-    {
-        int width, height;
-        height = bmpOriginal.getHeight();
-        width = bmpOriginal.getWidth();
-
-        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bmpGrayscale);
-        Paint paint = new Paint();
-        ColorMatrix cm = new ColorMatrix();
-        cm.setSaturation(0);
-        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-        paint.setColorFilter(f);
-        c.drawBitmap(bmpOriginal, 0, 0, paint);
-        return bmpGrayscale;
+    public IplImage bitMapToIplImage(Bitmap bitmap){
+        opencv_core.IplImage img = opencv_core.IplImage.create(cvSize(bitmap.getWidth(), bitmap.getHeight()), IPL_DEPTH_8U, 3);
+        try{
+            bitmap.copyPixelsToBuffer(img.getByteBuffer());
+        }catch (Exception ex){
+            Toast.makeText(this,"Problems for converter in bitmapToIplImage", Toast.LENGTH_LONG);
+        }
+        return img;
+    }
+    public Bitmap iplImageToBitmap(IplImage iplImage){
+        Bitmap bitmap = null;
+        try{
+            bitmap = Bitmap.createBitmap(iplImage.width(), iplImage.height(), Bitmap.Config.ARGB_8888);
+            bitmap.copyPixelsFromBuffer(iplImage.getByteBuffer());
+        }catch (Exception ex){
+            Toast.makeText(this,"Problems for converter in iplImageTBitmap", Toast.LENGTH_LONG);
+        }
+        return bitmap;
     }
 }
