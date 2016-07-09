@@ -13,14 +13,19 @@ import java.util.List;
 public class Dao {
 
     private static ConnectionSource connectionSource = null;
+    private Dao<Object,Integer> objectDao;
 
     public Dao(Context context){
         connectionSource = Connection.getConnectionSource(context);
     }
 
-    public Integer save()throws Exception{
+    /**
+     * This method is responsable for save this object in database.
+     */ 
+    public Integer save(Object object)throws Exception{
         try{
-
+            this.objectDao = DaoManager.createDao(connectionSource, object.class);//Create new Object
+            this.objectDao.create(objet);                                         //Save this objet in dataBase
         }catch (Exception ex){
             throw new Exception(ex.getMessage());
         }
