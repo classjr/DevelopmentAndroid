@@ -23,6 +23,9 @@ import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
 
+/**
+ * Search reference: http://stackoverflow.com/questions/5991319/capture-image-from-camera-and-display-in-activity
+ */ 
 
 public class ImageCapture extends AppCompatActivity {
 
