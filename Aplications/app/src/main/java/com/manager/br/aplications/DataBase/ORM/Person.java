@@ -17,7 +17,10 @@ public class Person {
 
     @DatabaseField(columnName = "age")
     private Integer age;
-
+    
+    @ForeignCollectionField
+    private Collection<Phone> phones;
+    
     public Integer getAge() {
         return age;
     }
