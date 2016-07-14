@@ -24,7 +24,9 @@
         </activity>
         <activity android:name=".camera.ImageCapture" />
         <activity android:name=".voz.VoiceCapture" />
-        <activity android:name=".contacts.Provider"></activity>
+        <activity android:name=".contacts.Provider" />
+        <activity android:name=".contacts.ListContact" />
+        <activity android:name=".DataBase.ORM.activity.ActivityOrm"></activity>
     </application>
 
 </manifest>

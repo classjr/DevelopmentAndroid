@@ -1,7 +1,10 @@
 package com.manager.br.aplications.DataBase.ORM;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Collection;
 
 /**
  * Created by junior on 08/07/2016.
@@ -19,7 +22,7 @@ public class Person {
     private Integer age;
     
     @ForeignCollectionField
-    private Collection<Phone> phones;
+    private Collection<Phones> phones;
     
     public Integer getAge() {
         return age;

@@ -5,4 +5,10 @@
     <string name="microphone">Microfone</string>
     <string name="contacts">Contatos</string>
     <string name="email">Email</string>
+    <string name="salvar">Save</string>
+    <string name="listar">List</string>
+
+    <string name="nome">Name</string>
+    <string name="Idade">Age</string>
+    <string name="orm">ORM</string>
 </resources>

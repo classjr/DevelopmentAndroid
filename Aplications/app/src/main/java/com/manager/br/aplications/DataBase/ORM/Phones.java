@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * Created by junior on 08/07/2016.
  */
 @DatabaseTable(tableName = "phone")
-public class Phone{
+public class Phones {
   @DatabaseField(generatedId = true)
   private Integer id;
   

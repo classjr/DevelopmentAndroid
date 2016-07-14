@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -63,8 +64,20 @@ public class Provider extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,number);
         this.listView.setAdapter(adapter);
     }
+
     /**
-     * This method is responsable for change the value of Phone number
+     * This method is responsable for capture clicked of user
+     * @param view
+     */
+    void captureId(View view){
+
+        String elementSelect;
+        ListView listView1 = (ListView)view;
+        elementSelect = listView1.getItemAtPosition(view.getId()).toString();
+
+    }
+    /**
+     * This method is responsable for change the value of Phones number
      */
     public Boolean changePhoneNumber(Long id,String numberNew) throws Exception{
         //References: http://stackoverflow.com/questions/9907751/android-update-a-contact

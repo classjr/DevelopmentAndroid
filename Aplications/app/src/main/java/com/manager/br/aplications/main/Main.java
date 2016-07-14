@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.manager.br.aplications.DataBase.ORM.activity.ActivityOrm;
+import com.manager.br.aplications.contacts.ListContact;
 import com.manager.br.aplications.contacts.Provider;
 import com.manager.br.aplications.R;
 import com.manager.br.aplications.camera.ImageCapture;
@@ -35,12 +37,17 @@ public class Main extends AppCompatActivity {
     }
 
     public void contacts(View view){
-        this.intent = new Intent(this,Provider.class); //called this intent
+        //this.intent = new Intent(this,Provider.class); //called this intent
+        this.intent = new Intent(this,ListContact.class); //called this intent
         startActivity(this.intent);
     }
 
     public void email(View view){
         SendEmail send = new SendEmail(this);
 
+    }
+    public void orm(View view){
+        this.intent = new Intent(this, ActivityOrm.class);
+        startActivity(this.intent);
     }
 }
